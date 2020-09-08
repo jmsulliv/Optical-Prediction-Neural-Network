@@ -98,9 +98,18 @@ def MultiLayerSequential(input_dim,neurons,outputs,metrics='mse'):
 # model = keras.models.Model(inputs=[input_data], outputs=[output])
 # model.compile(optimizer="sgd", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
 # model.summary()
-model = MultiLayerSequential(43,[128,128,128,128],40)
 
-model.fit(x_train, y_train, epochs=100, verbose=1, validation_data=(x_test, y_test))
+'''
+    Paht's comments
+    Few mistakes above. You are using softmax as an activation function for regression. I think it should be relu or relu6 (this eliminates vanishing gradients)
+    Your last layer is an activation layer. I think this is bad, it should just be a direct linear layer without any activation. 
+    Loss should be MSE or L1. categorical_crossentropy is for classification types of problems. 
+    Overall keras is fast and simple but lots of room for mistakes. You don't need a new computer for this type of training :) 
+'''
+# Paht's regression neural network class [128,128,128, etc ] is the number of neurons in each layer. You can change this to 1024 or whatever and get better prediction
+# Try [1024, 1024]  [1024, 1024, 1024, 1024, 1024] different combinations or something.
+model = MultiLayerSequential(x_train.shape[1],[128,128,128,128],y_train.shape[1])
+model.fit(x_train, y_train, epochs=1000, verbose=1, validation_data=(x_test, y_test))
 model.save("model-paht.Ni7FD")
 
 # model = keras.models.load_model("model.Ni7FD")
