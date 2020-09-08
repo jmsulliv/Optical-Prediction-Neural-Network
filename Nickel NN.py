@@ -4,11 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import loadmat
 from contextlib import redirect_stdout
+from tensorflow.keras import layers
 
 # data = loadmat('Nickel Data Restructured w AR (600 Points)- 20200713.mat')
 # data = loadmat('Nickel Data Restructured w AR (600 Points) - 5 Increment - 20200722.mat')
 # data = loadmat('Nickel Data Restructured w AR FDTD Data (457 Points)- 20200803.mat')
-data = loadmat('Nickel Data Restructured FDTD Data (600 Points, 40 Output)- 20200810.mat')
+data = loadmat('Nickel Data Restructured w AR FDTD Data (600 Points, 40 Output)- 20200806.mat')
 
 '''print(type(data))
 print(data.keys())'''
@@ -69,25 +70,41 @@ model = keras.models.Model(inputs=[input_data], outputs=[output])
 
 model.compile(optimizer="sgd", loss="categorical_crossentropy", metrics=["accuracy"])'''
 
-input_data = keras.layers.Input(shape=[42])
-hidden1 = keras.layers.Dense(50, activation="softmax")(input_data)
-hidden2 = keras.layers.Dense(30, activation="softmax")(hidden1)
-hidden3 = keras.layers.Dense(10, activation="softmax")(hidden2)
-hidden4 = keras.layers.Dense(10, activation="softmax")(hidden3)
-hidden5 = keras.layers.Dense(10, activation="softmax")(hidden4)
-hidden6 = keras.layers.Dense(10, activation="softmax")(hidden5)
-hidden7 = keras.layers.Dense(30, activation="softmax")(hidden6)
-hidden8 = keras.layers.Dense(50, activation="softmax")(hidden7)
-concat = keras.layers.concatenate([input_data, hidden8])
-output = keras.layers.Dense(40, activation="sigmoid")(concat)
-model = keras.models.Model(inputs=[input_data], outputs=[output])
-model.compile(optimizer="sgd", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
-model.summary()
+def MultiLayerSequential(input_dim,neurons,outputs,metrics='mse'):
+    '''
+        Define a model 
+    '''
+    model = keras.Sequential()    
+    model.add(layers.Dense(neurons[0], input_dim=input_dim, kernel_initializer='normal', activation='relu'))
+    for i in range(1,len(neurons)):
+        model.add(layers.Dense(neurons[i], kernel_initializer='normal', activation='relu'))
+    model.add(layers.Dense(outputs, kernel_initializer='normal')) 
+    opt = keras.optimizers.Adam(learning_rate=0.0001)
 
-model.fit(x_train, y_train, epochs=100000, verbose=1, validation_data=(x_test, y_test))
-model.save("model.Ni7FD")
+    model.compile(loss='mean_squared_error', optimizer = opt, metrics=metrics)
+    return model
 
-model = keras.models.load_model("model.Ni7FD")
+# input_data = keras.layers.Input(shape=[43])
+# hidden1 = keras.layers.Dense(50, activation="softmax")(input_data)
+# hidden2 = keras.layers.Dense(30, activation="softmax")(hidden1)
+# hidden3 = keras.layers.Dense(10, activation="softmax")(hidden2)
+# hidden4 = keras.layers.Dense(10, activation="softmax")(hidden3)
+# hidden5 = keras.layers.Dense(10, activation="softmax")(hidden4)
+# hidden6 = keras.layers.Dense(10, activation="softmax")(hidden5)
+# hidden7 = keras.layers.Dense(30, activation="softmax")(hidden6)
+# hidden8 = keras.layers.Dense(50, activation="softmax")(hidden7)
+# concat = keras.layers.concatenate([input_data, hidden8])
+# output = keras.layers.Dense(40, activation="sigmoid")(concat)
+# model = keras.models.Model(inputs=[input_data], outputs=[output])
+# model.compile(optimizer="sgd", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
+# model.summary()
+model = MultiLayerSequential(43,[128,128,128,128],40)
+
+model.fit(x_train, y_train, epochs=100, verbose=1, validation_data=(x_test, y_test))
+model.save("model-paht.Ni7FD")
+
+# model = keras.models.load_model("model.Ni7FD")
+
 test_loss, test_acc = model.evaluate(x_test, y_test, verbose=0)
 
 print("Tested Acc", test_acc)
