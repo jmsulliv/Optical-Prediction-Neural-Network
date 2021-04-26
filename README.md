@@ -68,8 +68,8 @@ AROutput<br />
 Cond<br />
 
 ***Grid Coordinates used for Predictions*** <br />
-GridCoords<br />  (X,Z values used in a 2 x Grid Size Matrix)
-GridData<br />  (Full 304 Input values for each set of grid coordinates (X and Z))
+GridCoords (X,Z values used in a 2 x Grid Size Matrix) <br /> 
+GridData   (Full 304 Input values for each set of grid coordinates (X and Z)) <br /> 
 
 ***Static Prediction Dataset*** <br />
 PredictCon<br />
