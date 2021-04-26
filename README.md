@@ -49,7 +49,7 @@ Output Neurons: <br />
 **Neuron 1-100 (emissivity) <br />
 Neuron 101-200 (reflectivity) <br />**
 
-We do not include tranmissivity in the output files as that property can be computed from the other two properties at each wavelength point as a function of emissivity and reflectivty, assuming Kirchoff's law holds. 
+We do not include tranmissivity in the output files as that property can be computed from the other two properties at each wavelength point as a function of emissivity and reflectivty, assuming Kirchhoff's law holds. 
 
 # Included Datafiles
 ## .csv Datafiles
