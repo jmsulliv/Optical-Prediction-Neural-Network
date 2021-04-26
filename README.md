@@ -50,15 +50,20 @@ Neuron 101-200 (reflectivity) <br />**
 We do not include tranmissivity in the output files as that property can be computed from the other two properties at each wavelength point as a function of emissivity and reflectivty, assuming Kirchoff's law holds. 
 
 # Included Datafiles
+## .csv Datafiles
 The included Excel .csv Datafiles show an annotated version of the data, with X, Z, AR, t_sub, the linearly spaced wavelength points, and n/k values that are linearly spaced corresponding to the wavelength point (i.e, if wavelength point #2 is at 1 um, then n/k #2 will be material data at 1 um as well). All data shown for the inputs is already normalized between 0 and 1 in the "Input" and "Output" .csv files, and unnormalized or "raw" data is included in the "Raw_Input" and "Raw_Output" excel file. 
 
+## Normalization Notes
 Normalization occurs with the following equation: Z_norm = (Z - Z_min)/(Z_max - Z_min)
 
 It should be noted that for the "normalized" datasets, the normalization occurs per grouping. X/Z are normalized together as the "geometric" properties, and AR, t_sub, wavelength, n, and k are all normalized separately from one another. To be more specific, Neuron 1/2 are normalized by their min/max values, Neuron 3 is normalized by its min/max, Neuron 4, Neuron 5-104, Neuron 105-204, and Neuron 205-304 follow the same group normalization strategy. For example, we find the mimimum and maximum k (extinction coefficient) across all the materials/simulations compiled in neurons 205-304, and then normalize across all the datasets using these min/max values for the "k" group of neuron 205-304. 
 
+## .mat Datafiles
 The .mat files included also have the normalized data but without the annotations. These files are put into structures and are classified by the aspect ratio used to limit the dataset. As the X/Z inputs are from a randomized matrix of values, there will be combinations that yield extremely high aspect ratio structures (several are AR > 2000). These points can lead to misleading results, so we eliminate the outliers by eliminating datapoints based on a certain aspect ratio. Over time, we have settled on AR < 100 being an appropriate threshold, but other ARs can also be used as a cutoff if so desired. All simulation results that have Z/X inputs exceeding 100 are removed from the larger dataset. For the 31775 dataset (31775 simulations of different materials combined together) around 300 points were eliminated for having an AR > 100. For the sake of ease of import into the system, each mat file shows the number of simulations included (i.e, "31775 datapoints") and the day the file was generated in year-month-day (i.e, "20210426"). The file is organized by structures that contain substructures for each apsect ratio that was used to limit the overall dataset. 
 
 Each .mat file of this format has the following structures:  <br />
+
+### .mat File used for Model Evaluation, Training, Testing, and Predicting for Materials used in Model Training
 
 ***Simulation Dataset Input/Ouptut*** <br />
 **ARInput**  (Combination of all normalized datasets, 304 Inputs for each simulation) <br />
@@ -86,6 +91,7 @@ Each of these categories contains sets of "sub structures" that allow the datase
 
 The .mat files include in their structure a "cond" vector which has the min/max values for the X/Z, AR, t_sub, and wavelength. 
 
+### Normalization Factors
 Normalization Condition Factors:<br />
 (1)/(2) Min/Max wavelength values<br />
 (3)/(4) Min/Max X/Z (geometric) values <br />
@@ -96,6 +102,7 @@ Normalization Condition Factors:<br />
 
 These condition values can be used to denormalize their respective neuron groupings following the linear equation: Z = Z_norm* (max_cond - min_cond) + min_cond
 
+### .mat File for Predicting Optical Properties for Materials not Included in the Training Dataset
 An additional .mat file is included that is automatically run in the Neural Network file and database which follows the format "Normalized Unseen Data - 20210426.mat". This dataset includes simulations for materials not included in the training dataset (ARInput/AROutput). This data has the standard 304 Input/200 Output format and is normalized using the condition factors in AR_LinN_100. 
 
 The matrices contained in this .mat file are:  <br />
