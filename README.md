@@ -74,20 +74,25 @@ Each .mat file of this format has the following structures:  <br />
 **GridData**   (Full 304 Input values for each set of grid coordinates (X and Z)) <br /> 
 
 ***Static Prediction Dataset*** <br />
-*All of these properties pertain to a set of Nickel simulations that are used to test the accuracy of the generated neural network. The inputs/outputs follow the same 304/200 configuration. This dataset is pre-normalized using the same condition values as the ARInput dataset. This dataset contains ~256 points before points are removed due to the conditions*
+*All of these properties pertain to a set of Nickel simulations that are used to test the accuracy of the generated neural network. The inputs/outputs follow the same 304/200 configuration. This dataset is pre-normalized using the same condition values as the ARInput dataset. This dataset contains ~256 points before points are removed due to the maximum AR allowed*
 
 **PredictCon** (Normalization Conditions used in the static prediction dataset) <br />
 **PredictInput** (Static Prediction Input - 304 neurons) <br />
 **PredictOutput** (Static Prediction Output - 304 neurons) <br />
 **ActInp** (Actual Input -- unnormalized input)<br />
 
-Each of these categories contains sets of "sub structures" that allow the datasets to use a different threshold for the maximum AR used. The appearance of these files is: 
+Each of these categories contains sets of "sub structures" that allow the datasets to use a different threshold for the maximum AR used. The appearance of these vectors is: 
+(Category).AR_LinN_100. The category refers to one of the bolded categories described above, the LinN to the type of normalization (Linear) and the number (100) to the maximum aspect ratio allowed in the dataset. To minimize the size of the .mat file, we currently only have AR_LinN_100 as a subvector, but if a study requires a different AR we can include as many as we need to: calling them only requries changing the number from 100 to the other aspect ratio dataset generated. 
 
 The .mat files include in their structure a "cond" vector which has the min/max values for the X/Z, AR, t_sub, and wavelength. 
 
 Normalization Condition Factors:<br />
-(1)/(2) Min/Max Z/X values<br />
-(3)/(4) Min/Max <br />
+(1)/(2) Min/Max wavelength values<br />
+(3)/(4) Min/Max X/Z (geometric) values <br />
+(5)/(6) Min/Max Aspect Ratio in the dataset <br />
+(7)/(8) Min/Max Substrate Thickness <br />
+
+These condition values can be used to denormalize their respective neuron groupings following the linear equation: Z = Z_norm* (max_cond - min_cond) + min_cond
 
 
 Calls to this data and all of the associated vector calls are done in the .py files already, so minimial work is required if you want to build and explore a new model using the mat files. 
