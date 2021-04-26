@@ -47,7 +47,7 @@ Output Neurons: <br />
 **Neuron 1-100 (emissivity) <br />
 Neuron 101-200 (reflectivity) <br />**
 
-We do not include tranmissivity in this as that can be computed from the other two properties. 
+We do not include tranmissivity in the output files as that property can be computed from the other two properties at each wavelength point as a function of emissivity and reflectivty, assuming Kirchoff's law holds. 
 
 # Included Datafiles
 The included Excel .csv Datafiles show an annotated version of the data, with X, Z, AR, t_sub, the linearly spaced wavelength points, and n/k values that are linearly spaced corresponding to the wavelength point (i.e, if wavelength point #2 is at 1 um, then n/k #2 will be material data at 1 um as well). All data shown for the inputs is already normalized between 0 and 1 in the "Input" and "Output" .csv files, and unnormalized or "raw" data is included in the "Raw_Input" and "Raw_Output" excel file. 
