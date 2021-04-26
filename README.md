@@ -91,11 +91,16 @@ Normalization Condition Factors:<br />
 (3)/(4) Min/Max X/Z (geometric) values <br />
 (5)/(6) Min/Max Aspect Ratio in the dataset <br />
 (7)/(8) Min/Max Substrate Thickness <br />
+(9)/(10) Min/Max n values across all materials used <br />
+(9)/(10) Min/Max k values across all materials used <br />
 
 These condition values can be used to denormalize their respective neuron groupings following the linear equation: Z = Z_norm* (max_cond - min_cond) + min_cond
 
+An additional .mat file is included that is automatically run in the Nueral Network file which follows the format "Unseen
 
-Calls to this data and all of the associated vector calls are done in the .py files already, so minimial work is required if you want to build and explore a new model using the mat files. 
+
+
+Please note that if you want more information on how to call/use this in python, the matfile and all of the associated vector calls are already done in the .py files given here, so minimial work is required if you want to build and explore a new model using the mat files. 
 
 # Notes on the Neural Network Files
 The neural network is tasked with taking all of the available inputs that represent the simulations (geometry, wavelength, and material properties) and replicate their outputs (emissivity and reflectivity) via a deep neural network approach or a convolutional neural network (or a combination of the two). The goal of this being to predict the behavior of materials and geometries not included in the training process. The files included here allow you to either make your own new network or use the one that has already been trained in order to predict for new data that follows the style as shown above. 
