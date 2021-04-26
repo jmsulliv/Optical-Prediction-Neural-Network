@@ -61,25 +61,29 @@ The .mat files included also have the normalized data but without the annotation
 Each .mat file of this format has the following structures:  <br />
 
 ***Simulation Dataset Input/Ouptut*** <br />
-ARInput <br />
-AROutput<br />
+ARInput  (Combination of all normalized datasets, 304 Inputs for each simulation) <br />
+AROutput  (Output of each simulation corresponding to the input of geometry, material, wavelength) <br />
 
 ***Simulation Input Normalization Conditions*** <br />
-Cond<br />
+Cond (Normalization Conditions, i.e, min/max values, as limited by the maximum aspect ratio)   <br /> 
 
 ***Grid Coordinates used for Predictions*** <br />
+*The Grid Data is a grid of inputs from 0 to 10 microns in both the X and Z directions that attaches material information, wavelength information, etc., to allow the model to make predictions and fill the design space of a given material. The normal size of this is 10000 datapoints, as we go from 0.1 to 10 microns in intervals of 0.1, meaning a 100 x 100 grid of X/Z data with a fixed substrate thickness. The particular size and scope of this dataset does not matter, it is simply another way of predicting from the model and generating new data for a particular material*
+
 GridCoords (X,Z values used in a 2 x Grid Size Matrix) <br /> 
 GridData   (Full 304 Input values for each set of grid coordinates (X and Z)) <br /> 
 
 ***Static Prediction Dataset*** <br />
-PredictCon<br />
-PredictInput<br />
-PredictOutput<br />
-ActInp (Actual Input)<br />
+*All of these properties pertain to a set of Nickel simulations that are used to test the accuracy of the generated neural network. The inputs/outputs follow the same 304/200 configuration. This dataset is pre-normalized using the same condition values as the ARInput dataset. This dataset contains ~256 points before points are removed due to the conditions*
 
+PredictCon (Normalization Conditions used in the static prediction dataset) <br />
+PredictInput (Static Prediction Input - 304 neurons) <br />
+PredictOutput (Static Prediction Output - 304 neurons) <br />
+ActInp (Actual Input -- unnormalized input)<br />
 
+Each of these categories contains sets of "sub structures" that allow the datasets to use a different threshold for the maximum AR used. The appearance of these files is: 
 
- The .mat files include in their structure a "cond" vector which has the min/max values for the X/Z, AR, t_sub, and wavelength. 
+The .mat files include in their structure a "cond" vector which has the min/max values for the X/Z, AR, t_sub, and wavelength. 
 
 Normalization Condition Factors:<br />
 (1)/(2) Min/Max Z/X values<br />
