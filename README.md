@@ -26,20 +26,28 @@ Silver:  https://refractiveindex.info/?shelf=main&book=Ag&page=Yang
 Aluminum: https://refractiveindex.info/?shelf=main&book=Al&page=Ordal
 
 # Understanding the Inputs in the Datafiles -- Neural Network Input
-In total, there are 304 inputs included in all of these files for each simulation. Those are the independent variables: X, Z, and t_sub. These are the randomly generated values discussed previously that were used in the simulation. Each simulation has a single X, Z, and t_sub. Each simulation has an output of emissivity/reflectivity based on these input parameters. The dependent parameter is the aspect ratio (AR) which is defined in this case as Z/X. This is an important geometric parameter that captures much of the  behavior of the micropyramids' optical property output. 
+In total, there are 304 inputs included for each simulation datafile. Those are the independent variables: X, Z, and t_sub. These are the randomly generated values discussed previously that were used in the simulation. Each simulation has a single X, Z, and t_sub. Each simulation has an output of emissivity/reflectivity based on these input parameters. The dependent parameter is the aspect ratio (AR) which is defined in this case as Z/X. This is an important geometric parameter that captures much of the  behavior of the micropyramids' optical property output. 
 
 The wavelength points are generated via a linspace (linearly spaced) vector as defined by the minimum and maximum wavelength. The importance of this vector is shown in the simulation, but as the outputs match one to one, we include the wavelength vector in the neural network inputs. The simulations use 100 datapoints linearly spaced from the min/max wavelength point. We use the exact same vector as an input into our neural network. 
 
 Accordingly, we also match the material properties to the wavelength vector. This means that as our wavelength vector is 100 points linearly spaced, we find the material n/k (complex refractive index) values that match the given wavelength points. So, if lambda #1 (wavelength) = 0.3 um, then n/k #1 are the n/k values for the material at 0.3 um, if lambda #2 = 0.5 um, then n/k values for the material at 0.5 um, and so on until the maximum (lambda #100) is reached. For our n,k values we use material data from literature and  build a curve-fit model for the data as we seldom match the exact wavelength point that the n,k values were measured at. 
 
 The ordering is as follows for the input: <br />
-Neuron 1 (X) <br />
+**Neuron 1 (X) <br />
 Neuron 2 (Z) <br />
 Neuron 3 (AR) <br />
 Neuron 4 (t_sub) <br />
 Neuron 5-104 (linearly spaced wavelength points with min at Neuron 5 and Max at Neuron 104) <br />
 Neuron 105-204 (linearly spaced n refractive index value, one-to-one matching the material data at the wavelengths in Neurons 5-104) <br />
-Neuron 205-304 (linearly spaced k extinction coefficient value, one-to-one matching the material data at the wavelengths in Neurons 5-104) <br />
+Neuron 205-304 (linearly spaced k extinction coefficient value, one-to-one matching the material data at the wavelengths in Neurons 5-104) <br />**
+
+The outputs of these simualations are emissivity and reflectivity. These points -- like n and k -- are a linearly spaced vector that one-to-one match the wavelength point used in simulation. 
+
+Output Neurons: <br />
+**Neuron 1-100 (emissivity) <br />
+Neuron 101-200 (reflectivity) <br />**
+
+We do not include tranmissivity in this as that can be computed from the other two properties. 
 
 # Included Datafiles
 The included Excel .csv Datafiles show an annotated version of the data, with X, Z, AR, t_sub, the linearly spaced wavelength points, and n/k values that are linearly spaced corresponding to the wavelength point (i.e, if wavelength point #2 is at 1 um, then n/k #2 will be material data at 1 um as well). All data shown for the inputs is already normalized between 0 and 1 in the "Input" and "Output" .csv files, and unnormalized or "raw" data is included in the "Raw_Input" and "Raw_Output" excel file. 
