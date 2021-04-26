@@ -13,7 +13,7 @@ The substrate thickness and wavelength properties depend on the selected materia
 
 This logic is also true for the wavelength range. We chose minimum and maxium values based on the expected behavior of the material. For transmissive materials such as PDMS (a polymer) simulating in the visible light spectrum (~300 - 800 nm) is useless as the material is transmissive and the added range only serves to increase simulation time. For each material, we have a predefined min/max wavelength starting/ending point. From there, the simulation creates a linearly spaced vector of wavelengths to be simulated over. 
 
-The simulation output (emissivity, reflectivity) match the wavelength points simulated one-for-one. From a mathmatical prospective, we are asking the simulation to simulate the equations across the mesh at particular frequencies, and each frequency point has a solution for the power transmitted through the domain and reflected from the domain (tranmission/reflection respectively). According to Kirchhoff's Law, The emission is the difference between the reflectivity and transmission. That is, the power that is not tranmitted or reflected is the emitted power. These values occur from 0 - 1 (ratios of input to output), and are defined as the emissivity, reflectivity, and transmissivity of the domain. More details can be found here: 
+The simulation output (emissivity, reflectivity) match the wavelength points simulated one-for-one. From a mathmatical prospective, we are asking the simulation to simulate the equations across the mesh at particular frequencies, and each frequency point has a solution for the power transmitted through the domain and reflected from the domain (tranmission/reflection respectively). According to Kirchhoff's Law, The emission is the difference between the reflectivity and transmission. That is, the power that is not tranmitted or reflected is the emitted power. These values occur from 0 - 1 (ratios of input to output), and are defined as the emissivity, reflectivity, and transmissivity of the domain. More details on the process and simulation structure can be found here: 
 
 https://support.lumerical.com/hc/en-us/articles/360042089573-Reflection-and-transmission-calculations-using-a-planewave
 https://support.lumerical.com/hc/en-us/articles/360042706493-Thermal-emission-from-a-micro-hole-array
@@ -56,9 +56,33 @@ Normalization occurs with the following equation: Z_norm = (Z - Z_min)/(Z_max - 
 
 It should be noted that for the "normalized" datasets, the normalization occurs per grouping. X/Z are normalized together as the "geometric" properties, and AR, t_sub, wavelength, n, and k are all normalized separately from one another. To be more specific, Neuron 1/2 are normalized by their min/max values, Neuron 3 is normalized by its min/max, Neuron 4, Neuron 5-104, Neuron 105-204, and Neuron 205-304 follow the same group normalization strategy. For example, we find the mimimum and maximum k (extinction coefficient) across all the materials/simulations compiled in neurons 205-304, and then normalize across all the datasets using these min/max values for the "k" group of neuron 205-304. 
 
-The .mat files included also have the normalized data but without the annotations. Calls to this data are done in the .py files already, so minimial work is required if you want to build and explore a new model. 
+The .mat files included also have the normalized data but without the annotations. These files are put into structures and are classified by the aspect ratio used to limit the dataset. As the X/Z inputs are from a randomized matrix of values, there will be combinations that yield extremely high aspect ratio structures (several are AR > 2000). These points can lead to misleading results, so we eliminate the outliers by eliminating datapoints based on a certain aspect ratio. Over time, we have settled on AR < 100 being an appropriate threshold, but other ARs can also be used as a cutoff if so desired. All simulation results that have Z/X inputs exceeding 100 are removed from the larger dataset. For the 31775 dataset (31775 simulations of different materials combined together) around 300 points were eliminated for having an AR > 100. For the sake of ease of import into the system, each mat file shows the number of simulations included (i.e, "31775 datapoints") and the day the file was generated in year-month-day (i.e, "20210426"). The file is organized by structures that contain substructures for each apsect ratio that was used to limit the overall dataset. 
+
+Each .mat file of this format has the following structures:  <br />
+ARInput <br />
+AROutput<br />
+Cond<br />
+GridCoords<br />
+GridData<br />
+PredictCon<br />
+PredictInput<br />
+PredictOutput<br />
+ActInp (Actual Input)<br />
+
+
+
+ The .mat files include in their structure a "cond" vector which has the min/max values for the X/Z, AR, t_sub, and wavelength. 
+
+Normalization Condition Factors:<br />
+(1)/(2) Min/Max Z/X values<br />
+(3)/(4) Min/Max <br />
+
+
+Calls to this data and all of the associated vector calls are done in the .py files already, so minimial work is required if you want to build and explore a new model using the mat files. 
 
 # Notes on the Neural Network Files
-The Neural Network .py file is comprehensive code that includes optimizaiton methods for the neural network, ways to run and build new neural networks for the dataset. The preincluded model (Iter 15, or Model_V3_Ni15FD) is an already optimized and generated model that can be used to process new data or to reprocess old data. To load and use this dataset, simply make sure that the "Model Run" option is set to "No" and that the "Iter Number" is set to 15. If you do want to run new models, simply change the Iter Number and set "Model Run" to "Yes". Hyperparameter optimizaiton is also included and can be turned on, but this is not recommended due to the time involved. 
+The neural network is tasked with taking all of the available inputs that represent the simulations (geometry, wavelength, and material properties) and replicate their outputs (emissivity and reflectivity) via a deep neural network approach or a convolutional neural network (or a combination of the two). The goal of this being to predict the behavior of materials and geometries not included in the training process. The files included here allow you to either make your own new network or use the one that has already been trained in order to predict for new data that follows the style as shown above. 
 
-The CNN File takes in a 256 x 256 image of the 10 um x 10 um simulation domain and makes predictions based on the binary image input for what the simulation output should be. The included .mat file has a 256 x 256 image for each geometry simulated as well as the emissivity/reflectivity outputs. This file has a similar execution style to the Neural Network .py file, simply change the "Model Run", "HyperP" and other parameters according to what you want to do. 
+The deep-neural network approach is contained in the The Neural Network .py file and is a comprehensive code file that includes optimizaiton methods for the neural network, ways to run and build new neural networks for the dataset. The preincluded model (Iter 15, or Model_V3_Ni15FD) is an already optimized and generated model that can be used to process new data or to reprocess old data. To load and use this dataset, simply make sure that the "Model Run" option is set to "No" and that the "Iter Number" is set to 15. If you do want to run new models, simply change the Iter Number and set "Model Run" to "Yes". Hyperparameter optimizaiton is also included and can be turned on, but this is not recommended due to the time involved. 
+
+The CNN File takes in a 256 x 256 image of the 10 um x 10 um simulation domain and makes predictions based on the binary image input for what the simulation output should be. The included .mat file has a 256 x 256 image for each geometry simulated as well as the emissivity/reflectivity outputs. This file has a similar execution style to the Neural Network .py file, simply change the "Model Run", "HyperP" and other parameters according to what you want to do. The CNN work is ongoing and less optimized, though the goal of this is to eventually demonstrate that we can take an image of the simulation domain and have a model that can predict what the optical properties of that simulation domain are. 
