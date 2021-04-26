@@ -59,11 +59,19 @@ It should be noted that for the "normalized" datasets, the normalization occurs 
 The .mat files included also have the normalized data but without the annotations. These files are put into structures and are classified by the aspect ratio used to limit the dataset. As the X/Z inputs are from a randomized matrix of values, there will be combinations that yield extremely high aspect ratio structures (several are AR > 2000). These points can lead to misleading results, so we eliminate the outliers by eliminating datapoints based on a certain aspect ratio. Over time, we have settled on AR < 100 being an appropriate threshold, but other ARs can also be used as a cutoff if so desired. All simulation results that have Z/X inputs exceeding 100 are removed from the larger dataset. For the 31775 dataset (31775 simulations of different materials combined together) around 300 points were eliminated for having an AR > 100. For the sake of ease of import into the system, each mat file shows the number of simulations included (i.e, "31775 datapoints") and the day the file was generated in year-month-day (i.e, "20210426"). The file is organized by structures that contain substructures for each apsect ratio that was used to limit the overall dataset. 
 
 Each .mat file of this format has the following structures:  <br />
+
+***Simulation Dataset Input/Ouptut*** <br />
 ARInput <br />
 AROutput<br />
+
+***Simulation Input Normalization Conditions*** <br />
 Cond<br />
+
+***Grid Coordinates used for Predictions*** <br />
 GridCoords<br />
 GridData<br />
+
+***Static Prediction Dataset*** <br />
 PredictCon<br />
 PredictInput<br />
 PredictOutput<br />
