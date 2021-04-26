@@ -26,12 +26,14 @@ Silver:  https://refractiveindex.info/?shelf=main&book=Ag&page=Yang
 Aluminum: https://refractiveindex.info/?shelf=main&book=Al&page=Ordal
 
 # Understanding the Inputs in the Datafiles -- Neural Network Input
+## Summary of Inputs/Outputs and Datafile setup
 In total, there are 304 inputs included for each simulation datafile. Those are the independent variables: X, Z, and t_sub. These are the randomly generated values discussed previously that were used in the simulation. Each simulation has a single X, Z, and t_sub. Each simulation has an output of emissivity/reflectivity based on these input parameters. The dependent parameter is the aspect ratio (AR) which is defined in this case as Z/X. This is an important geometric parameter that captures much of the  behavior of the micropyramids' optical property output. 
 
 The wavelength points are generated via a linspace (linearly spaced) vector as defined by the minimum and maximum wavelength. The importance of this vector is shown in the simulation, but as the outputs match one to one, we include the wavelength vector in the neural network inputs. The simulations use 100 datapoints linearly spaced from the min/max wavelength point. We use the exact same vector as an input into our neural network. 
 
 Accordingly, we also match the material properties to the wavelength vector. This means that as our wavelength vector is 100 points linearly spaced, we find the material n/k (complex refractive index) values that match the given wavelength points. So, if lambda #1 (wavelength) = 0.3 um, then n/k #1 are the n/k values for the material at 0.3 um, if lambda #2 = 0.5 um, then n/k values for the material at 0.5 um, and so on until the maximum (lambda #100) is reached. For our n,k values we use material data from literature and  build a curve-fit model for the data as we seldom match the exact wavelength point that the n,k values were measured at. 
 
+## Input/Output Breakdown
 The ordering is as follows for the input: <br />
 **Neuron 1 (X) <br />
 Neuron 2 (Z) <br />
@@ -59,11 +61,10 @@ Normalization occurs with the following equation: Z_norm = (Z - Z_min)/(Z_max - 
 It should be noted that for the "normalized" datasets, the normalization occurs per grouping. X/Z are normalized together as the "geometric" properties, and AR, t_sub, wavelength, n, and k are all normalized separately from one another. To be more specific, Neuron 1/2 are normalized by their min/max values, Neuron 3 is normalized by its min/max, Neuron 4, Neuron 5-104, Neuron 105-204, and Neuron 205-304 follow the same group normalization strategy. For example, we find the mimimum and maximum k (extinction coefficient) across all the materials/simulations compiled in neurons 205-304, and then normalize across all the datasets using these min/max values for the "k" group of neuron 205-304. 
 
 ## .mat Datafiles
+### .mat File used for Model Evaluation, Training, Testing, and Predicting for Materials used in Model Training
 The .mat files included also have the normalized data but without the annotations. These files are put into structures and are classified by the aspect ratio used to limit the dataset. As the X/Z inputs are from a randomized matrix of values, there will be combinations that yield extremely high aspect ratio structures (several are AR > 2000). These points can lead to misleading results, so we eliminate the outliers by eliminating datapoints based on a certain aspect ratio. Over time, we have settled on AR < 100 being an appropriate threshold, but other ARs can also be used as a cutoff if so desired. All simulation results that have Z/X inputs exceeding 100 are removed from the larger dataset. For the 31775 dataset (31775 simulations of different materials combined together) around 300 points were eliminated for having an AR > 100. For the sake of ease of import into the system, each mat file shows the number of simulations included (i.e, "31775 datapoints") and the day the file was generated in year-month-day (i.e, "20210426"). The file is organized by structures that contain substructures for each apsect ratio that was used to limit the overall dataset. 
 
 Each .mat file of this format has the following structures:  <br />
-
-### .mat File used for Model Evaluation, Training, Testing, and Predicting for Materials used in Model Training
 
 ***Simulation Dataset Input/Ouptut*** <br />
 **ARInput**  (Combination of all normalized datasets, 304 Inputs for each simulation) <br />
