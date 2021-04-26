@@ -32,7 +32,7 @@ The wavelength points are generated via a linspace (linearly spaced) vector as d
 
 Accordingly, we also match the material properties to the wavelength vector. This means that as our wavelength vector is 100 points linearly spaced, we find the material n/k (complex refractive index) values that match the given wavelength points. So, if lambda #1 (wavelength) = 0.3 um, then n/k #1 are the n/k values for the material at 0.3 um, if lambda #2 = 0.5 um, then n/k values for the material at 0.5 um, and so on until the maximum (lambda #100) is reached. For our n,k values we use material data from literature and  build a curve-fit model for the data as we seldom match the exact wavelength point that the n,k values were measured at. 
 
-The ordering is as follows for the input: 
+The ordering is as follows for the input: <br />
 Neuron 1 (X) <br />
 Neuron 2 (Z) <br />
 Neuron 3 (AR) <br />
