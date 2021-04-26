@@ -33,13 +33,13 @@ The wavelength points are generated via a linspace (linearly spaced) vector as d
 Accordingly, we also match the material properties to the wavelength vector. This means that as our wavelength vector is 100 points linearly spaced, we find the material n/k (complex refractive index) values that match the given wavelength points. So, if lambda #1 (wavelength) = 0.3 um, then n/k #1 are the n/k values for the material at 0.3 um, if lambda #2 = 0.5 um, then n/k values for the material at 0.5 um, and so on until the maximum (lambda #100) is reached. For our n,k values we use material data from literature and  build a curve-fit model for the data as we seldom match the exact wavelength point that the n,k values were measured at. 
 
 The ordering is as follows for the input: 
-Neuron 1 (X)
-Neuron 2 (Z)
-Neuron 3 (AR)
-Neuron 4 (t_sub)
-Neuron 5-104 (linearly spaced wavelength points with min at Neuron 5 and Max at Neuron 104) 
-Neuron 105-204 (linearly spaced n refractive index value, one-to-one matching the material data at the wavelengths in Neurons 5-104)
-Neuron 205-304 (linearly spaced k extinction coefficient value, one-to-one matching the material data at the wavelengths in Neurons 5-104)
+Neuron 1 (X) <br />
+Neuron 2 (Z) <br />
+Neuron 3 (AR) <br />
+Neuron 4 (t_sub) <br />
+Neuron 5-104 (linearly spaced wavelength points with min at Neuron 5 and Max at Neuron 104) <br />
+Neuron 105-204 (linearly spaced n refractive index value, one-to-one matching the material data at the wavelengths in Neurons 5-104) <br />
+Neuron 205-304 (linearly spaced k extinction coefficient value, one-to-one matching the material data at the wavelengths in Neurons 5-104) <br />
 
 # Included Datafiles
 The included Excel .csv Datafiles show an annotated version of the data, with X, Z, AR, t_sub, the linearly spaced wavelength points, and n/k values that are linearly spaced corresponding to the wavelength point (i.e, if wavelength point #2 is at 1 um, then n/k #2 will be material data at 1 um as well). All data shown for the inputs is already normalized between 0 and 1 in the "Input" and "Output" .csv files, and unnormalized or "raw" data is included in the "Raw_Input" and "Raw_Output" excel file. 
