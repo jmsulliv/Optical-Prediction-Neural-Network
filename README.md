@@ -96,9 +96,14 @@ Normalization Condition Factors:<br />
 
 These condition values can be used to denormalize their respective neuron groupings following the linear equation: Z = Z_norm* (max_cond - min_cond) + min_cond
 
-An additional .mat file is included that is automatically run in the Nueral Network file which follows the format "Unseen
+An additional .mat file is included that is automatically run in the Neural Network file and database which follows the format "Normalized Unseen Data - 20210426.mat". This dataset includes simulations for materials not included in the training dataset (ARInput/AROutput). This data has the standard 304 Input/200 Output format and is normalized using the condition factors in AR_LinN_100. 
 
+The matrices contained in this .mat file are:  <br />
 
+**'Unseen_Input'** (Titanium Micropyramid simulation dataset input, 304 Input Neurons)  <br />
+**'Unseen_Output'** (Titanium Micropyramid simulation dataset output, 200 output emissivity/reflectivity points)  <br />
+**'Unseen_Input2'** (Alumina Micropyramid simulation dataset input, 304 Input Neurons)  <br />
+**'Unseen_Output2'** (Alumina Micropyramid simulation dataset input, 304 Input Neurons)  <br />
 
 Please note that if you want more information on how to call/use this in python, the matfile and all of the associated vector calls are already done in the .py files given here, so minimial work is required if you want to build and explore a new model using the mat files. 
 
