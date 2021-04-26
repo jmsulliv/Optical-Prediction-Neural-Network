@@ -117,7 +117,9 @@ The matrices contained in this .mat file are:  <br />
 **'Unseen_Input'** (Titanium Micropyramid simulation dataset input, 304 Input Neurons)  <br />
 **'Unseen_Output'** (Titanium Micropyramid simulation dataset output, 200 output emissivity/reflectivity points)  <br />
 **'Unseen_Input2'** (Alumina Micropyramid simulation dataset input, 304 Input Neurons)  <br />
-**'Unseen_Output2'** (Alumina Micropyramid simulation dataset input, 304 Input Neurons)  <br />
+**'Unseen_Output2'** (Alumina Micropyramid simulation dataset input, 200 output emissivity/reflectivity points)  <br />
+
+These datasets contain the actual simulation outputs and are organized just like the training data, but have not been included in the training process. Thus, we can use this dataset to evaluate how accurate our model is in the prediction of materials that are unseen by the neural network. Generally, we use the inputs to predict the output (model.predict the unseen inputs) and evaulate the inputs vs. the ouputs to determine the error (MAE) score. A lower score indicates that the neural network is accurately predicting optical properties for materials it has not been exposed to. 
 
 Please note that if you want more information on how to call/use this in python, the matfile and all of the associated vector calls are already done in the .py files given here, so minimial work is required if you want to build and explore a new model using the mat files. 
 
