@@ -92,7 +92,7 @@ Normalization Condition Factors:<br />
 (5)/(6) Min/Max Aspect Ratio in the dataset <br />
 (7)/(8) Min/Max Substrate Thickness <br />
 (9)/(10) Min/Max n values across all materials used <br />
-(9)/(10) Min/Max k values across all materials used <br />
+(11)/(12) Min/Max k values across all materials used <br />
 
 These condition values can be used to denormalize their respective neuron groupings following the linear equation: Z = Z_norm* (max_cond - min_cond) + min_cond
 
