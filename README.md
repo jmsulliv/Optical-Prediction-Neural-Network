@@ -55,6 +55,8 @@ We do not include tranmissivity in the output files as that property can be comp
 ## .csv Datafiles
 The included Excel .csv Datafiles show an annotated version of the data, with X, Z, AR, t_sub, the linearly spaced wavelength points, and n/k values that are linearly spaced corresponding to the wavelength point (i.e, if wavelength point #2 is at 1 um, then n/k #2 will be material data at 1 um as well). All data shown for the inputs is already normalized between 0 and 1 in the "Input" and "Output" .csv files, and unnormalized or "raw" data is included in the "Raw_Input" and "Raw_Output" excel file. 
 
+These datasets are transposed from the original matlab matricies. Thus, all of the neurons are categorized in the .csv column headers whereas the neurons are the categorized in the rows in the .mat files. The .mat files are transposed in python using the .T function. 
+
 ## Normalization Notes
 Normalization occurs with the following equation: Z_norm = (Z - Z_min)/(Z_max - Z_min)
 
@@ -93,6 +95,10 @@ Each of these categories contains sets of "sub structures" that allow the datase
 The .mat files include in their structure a "cond" vector which has the min/max values for the X/Z, AR, t_sub, and wavelength. 
 
 ### Normalization Factors
+Contained in the "Cond.AR_LinN_100" (or whatever AR is used) vector in the mat file. 
+
+These condition values can be used to denormalize their respective neuron groupings following the linear equation: Z = Z_norm* (max_cond - min_cond) + min_cond
+
 Normalization Condition Factors:<br />
 (1)/(2) Min/Max wavelength values<br />
 (3)/(4) Min/Max X/Z (geometric) values <br />
@@ -101,7 +107,7 @@ Normalization Condition Factors:<br />
 (9)/(10) Min/Max n values across all materials used <br />
 (11)/(12) Min/Max k values across all materials used <br />
 
-These condition values can be used to denormalize their respective neuron groupings following the linear equation: Z = Z_norm* (max_cond - min_cond) + min_cond
+(1/2) are used to denormalize neuron inputs 5-104 (the wavelength vector), (3/4) are used to denormalize neuron inputs 1-2, (5/6) for neuron input 3, (7/8) for neuron input 4, (9/10) for neuron input 105-204, and (11/12) for neuron input 205-304. 
 
 ### .mat File for Predicting Optical Properties for Materials not Included in the Training Dataset
 An additional .mat file is included that is automatically run in the Neural Network file and database which follows the format "Normalized Unseen Data - 20210426.mat". This dataset includes simulations for materials not included in the training dataset (ARInput/AROutput). This data has the standard 304 Input/200 Output format and is normalized using the condition factors in AR_LinN_100. 
