@@ -22,8 +22,8 @@ https://doi.org/10.1364/OE.14.008785
 At each frequency point of the solution, the material properties have to be considered for the simulation to work. For optical simulations, the permittivity/refractive index are how materials are differentiated from one another and what the simulation runs on. The simulation draws from a library of material data; we add to the material library for materials that do not exist or require refinement for our purposes (such as the wavelengths we want to simulate are not included in the library data). The data we use and import is based on literature values of n,k (refractive index) values from experimental measurements. For each frequency point of solution there is a matching n and k value used in the simulation. It should be noted that a material model is constructed (i.e, a curve-fit) based on existing literature values for frequency/wavelength points that do not match the literature values precisely. 
 
 Examples of n,k complex refractive index data that we draw upon can be found here for several example materials: 
-Silver:  https://refractiveindex.info/?shelf=main&book=Ag&page=Yang
-Aluminum: https://refractiveindex.info/?shelf=main&book=Al&page=Ordal
+Silver:  https://refractiveindex.info/?shelf=main&book=Ag&page=Yang <br />
+Aluminum: https://refractiveindex.info/?shelf=main&book=Al&page=Ordal <br />
 
 # Understanding the Inputs in the Datafiles -- Neural Network Input
 ## Summary of Inputs/Outputs and Datafile setup
