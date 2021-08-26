@@ -21,9 +21,9 @@ https://doi.org/10.1364/OE.14.008785
 
 At each frequency point of the solution, the material properties have to be considered for the simulation to work. For optical simulations, the permittivity/refractive index are how materials are differentiated from one another and what the simulation runs on. The simulation draws from a library of material data; we add to the material library for materials that do not exist or require refinement for our purposes (such as the wavelengths we want to simulate are not included in the library data). The data we use and import is based on literature values of n,k (refractive index) values from experimental measurements. For each frequency point of solution there is a matching n and k value used in the simulation. It should be noted that a material model is constructed (i.e, a curve-fit) based on existing literature values for frequency/wavelength points that do not match the literature values precisely. 
 
-Examples of n,k complex refractive index data that we draw upon can be found here for several example materials: 
-Silver:  https://refractiveindex.info/?shelf=main&book=Ag&page=Yang
-Aluminum: https://refractiveindex.info/?shelf=main&book=Al&page=Ordal
+Examples of n,k complex refractive index data that we draw upon can be found here for several example materials:  <br />
+Silver:  https://refractiveindex.info/?shelf=main&book=Ag&page=Yang <br />
+Aluminum: https://refractiveindex.info/?shelf=main&book=Al&page=Ordal <br />
 
 # Understanding the Inputs in the Datafiles -- Neural Network Input
 ## Summary of Inputs/Outputs and Datafile setup
@@ -34,6 +34,8 @@ The wavelength points are generated via a linspace (linearly spaced) vector as d
 Accordingly, we also match the material properties to the wavelength vector. This means that as our wavelength vector is 100 points linearly spaced, we find the material n/k (complex refractive index) values that match the given wavelength points. So, if lambda #1 (wavelength) = 0.3 um, then n/k #1 are the n/k values for the material at 0.3 um, if lambda #2 = 0.5 um, then n/k values for the material at 0.5 um, and so on until the maximum (lambda #100) is reached. For our n,k values we use material data from literature and  build a curve-fit model for the data as we seldom match the exact wavelength point that the n,k values were measured at. 
 
 ## Input/Output Breakdown
+![DNN Architecture](https://imgur.com/2TFVQDh)
+
 The ordering is as follows for the input: <br />
 **Neuron 1 (X) <br />
 Neuron 2 (Z) <br />
