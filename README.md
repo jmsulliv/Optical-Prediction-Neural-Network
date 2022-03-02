@@ -81,64 +81,47 @@ The .mat files included also have the normalized data but without the annotation
 
 Each .mat file has the following variables:  <br />
 
-***Simulation Dataset Input/Ouptut*** <br />-- *"35500 Simulation Dataset - 8 Input 2 Output"* <br />
+***Simulation Dataset Input/Ouptut*** <br />-- *File - "35500 Simulation Dataset - 8 Input 2 Output"* <br />
 **Main_Input**  (Combination of all normalized datasets, 304 Inputs for each simulation) <br />
 **Main_Output**  (Output of each simulation corresponding to the input of geometry, material, wavelength) <br />
 
-***Simulation Input Normalization Conditions*** <br /> *Conditions - Not AR Normalized* <br />
+***Simulation Input Normalization Conditions*** <br /> -- *File: Conditions - Not AR Normalized* <br />
 **Cond** (Normalization Conditions, i.e, min/max values, as limited by the maximum aspect ratio)   <br /> 
 
 ***Grid Coordinates used for Predictions*** <br />
-*The Grid Data is a grid of inputs from 0 to 10 microns in both the X and Z directions that attaches material information, wavelength information, etc., to allow the model to make predictions and fill the design space of a given material. The normal size of this is 10000 datapoints, as we go from 0.1 to 10 microns in intervals of 0.1, meaning a 100 x 100 grid of X/Z data with a fixed substrate thickness. The particular size and scope of this dataset does not matter, it is simply another way of predicting from the model and generating new data for a particular material*
+*The Grid Data is a grid of inputs from 0 to 10 microns in both the X and Z directions that attaches material information, wavelength information, etc., to allow the model to make predictions and fill the design space of a given material. The normal size of this is 10000 datapoints, as we go from 0.1 to 10 microns in intervals of 0.1, meaning a 100 x 100 grid of X/Z data with a fixed substrate thickness. The particular size and scope of this dataset does not matter, it is simply another way of predicting from the model and generating new data for a particular material -- these datasets can be made to be either a single material or to contain geometric data for multiple materials*
 
 **GridCoords** (X,Z values used in a 2 x Grid Size Matrix) <br /> 
-**GridData**   (Full 304 Input values for each set of grid coordinates (X and Z)) <br /> 
+**GridData**   (8 Input values for each set of grid coordinates (X and Z) and given material(s)) <br /> 
 
-***Static Prediction Dataset*** <br />
-*All of these properties pertain to a set of Nickel simulations that are used to test the accuracy of the generated neural network. The inputs/outputs follow the same 304/200 configuration. This dataset is pre-normalized using the same condition values as the ARInput dataset. This dataset contains ~256 points before points are removed due to the maximum AR allowed*
-
-**PredictCon** (Normalization Conditions used in the static prediction dataset) <br />
-**PredictInput** (Static Prediction Input - 304 neurons) <br />
-**PredictOutput** (Static Prediction Output - 304 neurons) <br />
-**ActInp** (Actual Input -- unnormalized input)<br />
-
-Each of these categories contains sets of "sub structures" that allow the datasets to use a different threshold for the maximum AR used. The appearance of these vectors is: 
-(Category).AR_LinN_100. The category refers to one of the bolded categories described above, the LinN to the type of normalization (Linear) and the number (100) to the maximum aspect ratio allowed in the dataset. To minimize the size of the .mat file, we currently only have AR_LinN_100 as a subvector, but if a study requires a different AR we can include as many as we need to: calling them only requries changing the number from 100 to the other aspect ratio dataset generated. 
-
-The .mat files include in their structure a "cond" vector which has the min/max values for the X/Z, AR, t_sub, and wavelength. 
 
 ### Normalization Factors
-Contained in the "Cond.AR_LinN_100" (or whatever AR is used) vector in the mat file. 
-
-These condition values can be used to denormalize their respective neuron groupings following the linear equation: Z = Z_norm* (max_cond - min_cond) + min_cond
-
-Normalization Condition Factors:<br />
-(1)/(2) Min/Max wavelength values<br />
-(3)/(4) Min/Max X/Z (geometric) values <br />
-(5)/(6) Min/Max Aspect Ratio in the dataset <br />
-(7)/(8) Min/Max Substrate Thickness <br />
-(9)/(10) Min/Max n values across all materials used <br />
-(11)/(12) Min/Max k values across all materials used <br />
-
-(1/2) are used to denormalize neuron inputs 5-104 (the wavelength vector), (3/4) are used to denormalize neuron inputs 1-2, (5/6) for neuron input 3, (7/8) for neuron input 4, (9/10) for neuron input 105-204, and (11/12) for neuron input 205-304. 
+Contained in the Condition file -- specifying the minimum and maximum of values for all the neuron inputs. This does not include any information on the quantile regression properties, but we include code to perform quantile normalization and the associated raw input dataset. 
 
 ### .mat File for Predicting Optical Properties for Materials not Included in the Training Dataset
-An additional .mat file is included that is automatically run in the Neural Network file and database which follows the format "Normalized Unseen Data - 20210426.mat". This dataset includes simulations for materials not included in the training dataset (ARInput/AROutput). This data has the standard 304 Input/200 Output format and is normalized using the condition factors in AR_LinN_100. 
+An additional .mat file is included that is automatically run in the Neural Network file and database which follows the format "Unseen Datasets - 8 Inputs 2 Output - 20220208.mat". This dataset includes simulations for materials not included in the training dataset. 
 
 The matrices contained in this .mat file are:  <br />
 
-**'Unseen_Input'** (Titanium Micropyramid simulation dataset input, 304 Input Neurons)  <br />
-**'Unseen_Output'** (Titanium Micropyramid simulation dataset output, 200 output emissivity/reflectivity points)  <br />
-**'Unseen_Input2'** (Alumina Micropyramid simulation dataset input, 304 Input Neurons)  <br />
-**'Unseen_Output2'** (Alumina Micropyramid simulation dataset input, 200 output emissivity/reflectivity points)  <br />
+**'Unseen_Input'** (Titanium Micropyramid simulation dataset input, 8 Input Neurons)  <br />
+**'Unseen_Output'** (Titanium Micropyramid simulation dataset output, 2 output reflectivity/transmissivity points)  <br />
+**'Unseen_Input2'** (Alumina Micropyramid simulation dataset input, 8 Input Neurons)  <br />
+**'Unseen_Output2'** (Alumina Micropyramid simulation dataset input, 2 output reflectivity/transmissivity points)  <br />
+**'Unseen_Input2'** (Library Micropyramid simulation dataset input, 8 Input Neurons)  <br />
+**'Unseen_Output2'** (Library Micropyramid simulation dataset input, 2 output reflectivity/transmissivity points)  <br />
 
 These datasets contain the actual simulation outputs and are organized just like the training data, but have not been included in the training process. Thus, we can use this dataset to evaluate how accurate our model is in the prediction of materials that are unseen by the neural network. Generally, we use the inputs to predict the output (model.predict the unseen inputs) and evaulate the inputs vs. the ouputs to determine the error (MAE) score. A lower score indicates that the neural network is accurately predicting optical properties for materials it has not been exposed to. 
 
 Please note that if you want more information on how to call/use this in python, the matfile and all of the associated vector calls are already done in the .py files given here, so minimial work is required if you want to build and explore a new model using the mat files. 
 
 # Notes on the Neural Network Files
-The neural network is tasked with taking all of the available inputs that represent the simulations (geometry, wavelength, and material properties) and replicate their outputs (emissivity and reflectivity) via a deep neural network approach or a convolutional neural network (or a combination of the two). The goal of this being to predict the behavior of materials and geometries not included in the training process. The files included here allow you to either make your own new network or use the one that has already been trained in order to predict for new data that follows the style as shown above. 
+The neural network is tasked with taking all of the available inputs that represent the simulations (geometry, wavelength, and material properties) and replicate their outputs (reflectivity and transmissivity) via a deep neural network approach or a convolutional neural network (or a combination of the two). The goal of this being to predict the behavior of materials and geometries not included in the training process. The files included here allow you to either make your own new network or use the one that has already been trained in order to predict for new data that follows the style as shown above. 
 
-The deep-neural network approach is contained in the The Neural Network .py file and is a comprehensive code file that includes optimizaiton methods for the neural network, ways to run and build new neural networks for the dataset. The preincluded model (Iter 15, or Model_V3_Ni15FD) is an already optimized and generated model that can be used to process new data or to reprocess old data. To load and use this dataset, simply make sure that the "Model Run" option is set to "No" and that the "Iter Number" is set to 15. If you do want to run new models, simply change the Iter Number and set "Model Run" to "Yes". Hyperparameter optimizaiton is also included and can be turned on, but this is not recommended due to the time involved. 
+The deep-neural network approach is contained in the The Neural Network .py file (Optical_Network_V6 and Optical_Network_V7) and is a comprehensive code file that includes optimization methods for the neural network, ways to run and build new neural networks for the dataset. The preincluded models (Model 22 and Model 23) is an already optimized and generated model that can be used to process new data or to reprocess old data. To load and use this dataset, simply make sure that the "Model Run" option is set to "No" and that the "Iter Number" is set to 22 (can change this to 23). If you do want to run new models, simply change the Iter Number and set "Model Run" to "Yes". Hyperparameter optimizaiton is also included and can be turned on, but this is not recommended due to the time involved. 
 
-The CNN File takes in a 256 x 256 image of the 10 um x 10 um simulation domain and makes predictions based on the binary image input for what the simulation output should be. The included .mat file has a 256 x 256 image for each geometry simulated as well as the emissivity/reflectivity outputs. This file has a similar execution style to the Neural Network .py file, simply change the "Model Run", "HyperP" and other parameters according to what you want to do. The CNN work is ongoing and less optimized, though the goal of this is to eventually demonstrate that we can take an image of the simulation domain and have a model that can predict what the optical properties of that simulation domain are. 
+Please note that we have included two different models for evaulation, following the methods presented in our paper. 
+
+# Model 22 -- ** Model that includes 5 simulations from each of the library materials, 10 simulations from AL2O3/Ti in the training data** <br />
+# Model 23 -- ** Model that includes no simulations from other materials, completely unseen**
+
+These models have the same architecture, but rely on different data to train them. Model 22 incorporates several simulations from the "unseen" category to quantify the effects of "calibration" on the training data. It should be noted that this is only ~ 150 simulations added to the 35500 simulations that is present in both Model 22 and Model 23. 
