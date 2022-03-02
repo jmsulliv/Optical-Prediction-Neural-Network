@@ -64,7 +64,7 @@ These datasets are transposed from the original matlab matricies for more transp
 ## Normalization Notes
 Normalization of each variable (or neuron row) depends on our previous experimentation and what we have determined to be the most effective based on the composition and distribution of our datasets. 
 
-Normalization is broken down as follows: 
+Normalization is broken down as follows: <br />
 (X,Z)                  - Normalized together using a linear normalization (Znorm = (Z - Zmin)/(Z_max - Z_min)) <br />
 (lambda - wavelength)  - Normalized  using a linear normalization <br />
 (T_sub)                - Normalized using quantile regression <br />
