@@ -121,7 +121,7 @@ The deep-neural network approach is contained in the The Neural Network .py file
 
 Please note that we have included two different models for evaulation, following the methods presented in our paper. 
 
-# Model 22 -- ** Model that includes 5 simulations from each of the library materials, 10 simulations from AL2O3/Ti in the training data** <br />
-# Model 23 -- ** Model that includes no simulations from other materials, completely unseen**
+### Model 22 -- ** Model that includes 5 simulations from each of the library materials, 10 simulations from AL2O3/Ti in the training data** <br />
+### Model 23 -- ** Model that includes no simulations from other materials, completely unseen**
 
 These models have the same architecture, but rely on different data to train them. Model 22 incorporates several simulations from the "unseen" category to quantify the effects of "calibration" on the training data. It should be noted that this is only ~ 150 simulations added to the 35500 simulations that is present in both Model 22 and Model 23. 
