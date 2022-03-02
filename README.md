@@ -65,13 +65,13 @@ These datasets are transposed from the original matlab matricies for more transp
 Normalization of each variable (or neuron row) depends on our previous experimentation and what we have determined to be the most effective based on the composition and distribution of our datasets. 
 
 Normalization is broken down as follows: 
-(X,Z)                  - Normalized together using a linear normalization (Znorm = (Z - Zmin)/(Z_max - Z_min))
-(lambda - wavelength)  - Normalized  using a linear normalization
-(T_sub)                - Normalized using quantile regression
-(n - refractive index) - Normalized using log/linear normalization (z_norm = log10(z) as the first step) 
-(k - extinction coef.) - Normalized using quantile regression
-(ereal - real perm)    - Normalized using quantile regression
-(eim - im perm)        - Normalized using quantile regression
+(X,Z)                  - Normalized together using a linear normalization (Znorm = (Z - Zmin)/(Z_max - Z_min)) <br />
+(lambda - wavelength)  - Normalized  using a linear normalization <br />
+(T_sub)                - Normalized using quantile regression <br />
+(n - refractive index) - Normalized using log/linear normalization (z_norm = log10(z) as the first step)  <br />
+(k - extinction coef.) - Normalized using quantile regression <br />
+(ereal - real perm)    - Normalized using quantile regression <br />
+(eim - im perm)        - Normalized using quantile regression <br />
 
 It should be noted that all of these properties are normalized by "group", and the matricies are reconstructed after each column is normalized separately. 
 
