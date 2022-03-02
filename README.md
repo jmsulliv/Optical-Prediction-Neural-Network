@@ -81,11 +81,11 @@ The .mat files included also have the normalized data but without the annotation
 
 Each .mat file has the following variables:  <br />
 
-***Simulation Dataset Input/Ouptut*** <br />-- *"35500 Simulation Dataset - 8 Input 2 Output"*
+***Simulation Dataset Input/Ouptut*** <br />-- *"35500 Simulation Dataset - 8 Input 2 Output"* <br />
 **Main_Input**  (Combination of all normalized datasets, 304 Inputs for each simulation) <br />
 **Main_Output**  (Output of each simulation corresponding to the input of geometry, material, wavelength) <br />
 
-***Simulation Input Normalization Conditions*** <br />
+***Simulation Input Normalization Conditions*** <br /> *Conditions - Not AR Normalized* <br />
 **Cond** (Normalization Conditions, i.e, min/max values, as limited by the maximum aspect ratio)   <br /> 
 
 ***Grid Coordinates used for Predictions*** <br />
