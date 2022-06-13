@@ -1,8 +1,8 @@
 # Optical-Prediction-Neural-Network
 Optical Data Prediction Tool for micropyramid style surface structures, with a neural network predicting the emissivity and reflectivity of the domain. 
 
-# This network/process is demonstrated in the paper: 
 
+This network/process is demonstrated in the paper: 
 **Sullivan, J., Mirhashemi, A. & Lee, J. Deep learning based analysis of microstructured materials for thermal radiation control. Sci Rep 12, 9785 (2022). https://doi.org/10.1038/s41598-022-13832-8**
 
 # General Description
