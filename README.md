@@ -1,9 +1,7 @@
 # Optical-Prediction-Neural-Network
-Optical Data Prediction Tool for micropyramid style surface structures, with a neural network predicting the emissivity and reflectivity of the domain. 
+Optical Data Prediction Tool for micropyramid style surface structures, with a neural network predicting the emissivity and reflectivity of the domain, as demonstrated in the paper: 
 
-
-This network/process is demonstrated in the paper: 
-**Sullivan, J., Mirhashemi, A. & Lee, J. Deep learning based analysis of microstructured materials for thermal radiation control. Sci Rep 12, 9785 (2022). https://doi.org/10.1038/s41598-022-13832-8**
+*Sullivan, J., Mirhashemi, A. & Lee, J. Deep learning based analysis of microstructured materials for thermal radiation control. Sci Rep 12, 9785 (2022). https://doi.org/10.1038/s41598-022-13832-8*
 
 # General Description
 
@@ -41,7 +39,6 @@ The fifth and six input parameters are n and k values of the complex refractive 
 The seventh and eigth parameters are derived from the complex refractive index: that is, the real and imaginary relative permettivity values. We compute these values as E_real = n^2 - k^2 and E_im = 2*n*k. We have found that including these additional correlated parameters significantly strengthens the relationship between the material input and the output, allowing for our model to much more accurately predict libraries of materials that are very dissimilar from those used in the training of the network. 
 
 ## Input/Output Breakdown
-![DNN Architecture](https://imgur.com/2TFVQDh)
 
 The ordering is as follows for the input: <br />
 **Neuron 1 (X) <br />
