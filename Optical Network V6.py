@@ -30,6 +30,12 @@ import itertools
 #  <--------------- Jonathan Sullivan (JS) Optical Prediction Code V6  ------------->
 #   <--------------- Last Updated: 12/02/2021 by JS                    ------------->
 
+
+# =======================================================================================================
+# =============================== SECTION: FILE AND MODE SELECTION  =====================================
+# =======================================================================================================
+
+# This will determine if the model is generated or if it is loaded from previous generations
 ModelRun = 'Yes'  # Yes or No
 
 # Model Number for Saving/Loading Data - this number determines what model number you are loading and/or saving
@@ -50,56 +56,13 @@ Unseen_Test = 'No'
 # ------------------- PREFERRED/SAVED MODELS ------------------------------
 # Note: FDTD_New is the preferred type, all other models are outdated
 # Good/Excellent MODELS- -- Models for V6
-# --- Note: Each model has different normalization conditions and inputs
-# ---- Model 7: 8 Input Neurons, 2 output (Lin: C, G, e_real)
-# ---- Model 8: 8 Input Neurons, 2 output (Lin: C, G, e_real) --
-#               but includes 5 multi_material simulations  per material in training/val
-# ---- Model 9: 8 Input Neurons, 2 output (Lin: C, G, e_real) --
-#               but includes 1 multi_material simulations  per material in training/val
-# ---- Model 10: 8 Input Neurons, 2 output (Lin: C, G, e_real) --
-#               but includes 0.5 multi_material simulations  per material in training/val
-# ---- Model 11: 8 Input Neurons, 2 output (Lin: C, G, e_real) --
-#               but includes 0.25 multi_material simulations  per material in training/val
-# ---- Model 12: 8 Input Neurons, 2 output (Lin: C, G, e_real) --
-#               but includes 10 multi_material simulations  per material in training/val
-##### UNSEEN MAE: 0.0168 ----- Ti = 0.01621, Al2O3 = 0.01589
-# ---- Model 13: 8 Input Neurons, 2 output (Lin: C, G, e_real) --
-#               but includes 4 multi_material simulations  per material in training/val
-#               Validation data includes the multi_material_sims
-# ---- Model 14: 8 Input Neurons, 2 output (Lin: C, G, e_real) --
-#               but includes 10 multi_material simulations  per material in training/val
-#               Validation data includes the multi_material_sims
-# ---- Model 15: 8 Input Neurons, 2 output (Lin: C, G, e_real) --
-#               but includes 10 multi_material and unseen simulations  per material in val
-#               Validation data includes the multi_material_sims/unseen, none in training
-# ---- Model 16: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
-#              no simulations included in val/training from multi/unseen data
-# ---- Model 17: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
-#              no simulations included in val/training from multi/unseen data -- 400 neurons/8 layers
-# ---- Model 18: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
-#              10 simulations included in val/training from multi/unseen data -- 400 neurons/8 layers
-# ---- Model 19: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
-#              20 simulations included in val/training from multi/unseen data -- 400 neurons/8 layers
-# ---- Model 20: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
-#              20 simulations included in val/training from multi/unseen data -- 400 neurons/8 layers, with new
-#               MLP structure (4/100 and 4/100)
-# ---- Model 21: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
-#              20 simulations included in val/training from multi/unseen data -- 400 neurons/8 layers, with new
-#               MLP structure (4/100 and 4/100)
+
 # ---- Model 22: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
 #              5 simulations included in unseen data, 10 Ti, 10 Al2O3 -- 200/1 layer + 400 neurons/7 layers, with new
 #               MLP structure (4/100 and 4/100)
 # ---- Model 23: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
 #              0 Unseen Data Included -- 200/1 layer + 400 neurons/7 layers, with new
 #               MLP structure (4/100 and 4/100)
-# ---- Model 24: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
-#              10 Sim Unseen Data Included -- 200/1 layer + 400 neurons/7 layers, with new
-#               MLP structure (4/100 and 4/100)
-# Models for V7:
-# ---- Model 1: 8 Input Neurons, 2 output (Lin: C, G) - (Log: n) - (Quantile Uniform -- k, ereal, TS, eim)
-#               50 Sim Unseen Data Included, 500 Ti/750 Al2O3 -- 200/1 layer + 400 neurons/7 layers, with new
-#               MLP structure (4/100 and 4/100)
-
 
 # Specification of File Name based on Input Type
 if Input_Type == 'FDTD':
@@ -115,7 +78,10 @@ elif Input_Type == 'FDTD_Multi':
 # Print the name to confirm
 print('Filename Desired for Simulation:', model_filename)
 
-# Title - Data: Loading and Assignment
+
+# =================================================================
+# ---------------------- LOADING THE DATA -------------------------
+# =================================================================
 # Load data to preserve the structure
 data = loadmat('Data/35500 Simulation Dataset - 8 Input 2 Output - 20220208.mat',
                squeeze_me=True,
@@ -127,59 +93,6 @@ data = loadmat('Data/35500 Simulation Dataset - 8 Input 2 Output - 20220208.mat'
 X = data['Main_Input']
 Y = data['Main_Output']
 
-'''x_train = data['Train_Input']
-x_val = data['Val_Input']
-x_test = data['Test_Input']
-
-y_train = data['Train_Output']
-y_val = data['Val_Output']
-y_test = data['Test_Output']
-
-GDX = data['Grid_Input']
-Grid = data['GridCoords_Expanded']'''
-
-
-# Function for Normalizing Input Datasets
-def normalize_dataset(data):
-    dataset = data
-    data_pt = dataset[0:, 6:8]
-
-    pt = PowerTransformer(method='yeo-johnson', standardize='false')
-
-    pt.fit(data_pt)
-    pt.lambdas_
-    data2 = pt.transform(data_pt)
-
-    data_n = data2[0:, :1]
-    data_k = data2[0:, 1:]
-
-    min_n = min(data_n)
-    max_n = max(data_n)
-
-    min_k = min(data_k)
-    max_k = max(data_k)
-
-    norm_n = (data_n - min_n) / (max_n - min_n)
-    norm_k = (data_k - min_k) / (max_k - min_k)
-
-    dataset[0:, 6:7] = norm_n
-    dataset[0:, 7:8] = norm_k
-
-    return dataset
-
-
-# Normalize Datasets Columns 7 and 8 (Permittivity)
-'''X = normalize_dataset(X)
-GDX = normalize_dataset(GDX)'''
-
-# Shuffle Data X, Y from Dataset
-'''X, Y = shuffle(X, Y)'''
-
-# Setup Prediction Dataset
-'''XP = XP.T
-YP = YP.T
-XPlot = XPlot.T'''
-
 # Seed Information
 seed = 7
 np.random.seed(seed)
@@ -188,7 +101,10 @@ np.random.seed(seed)
 epochnum = 200
 results = 0
 
-# Print Shapes
+# =======================================================================================================
+# ================================ SECTION: SPLIT AND PREPARE DATA  =====================================
+# =======================================================================================================
+
 
 # Title ------ Section conditions based on Calib/Test Size Specification --------
 #  ----------------------- CONDITIONS FOR TESTING -------------------------------
@@ -247,13 +163,13 @@ elif Model_Calib == 'No':
           (len(X) - (len(x_train) + len(x_val) + len(x_test))))  # Shape of the input vector
     print('\n-------------------\n')
 
+# =======================================================================================================
+# ================================== SECTION: FUNCTION DEFINITIONS  =====================================
+# =======================================================================================================
+
 
 # Title: ----------------- CLASS/FUNCTION DEFINITIONS ---------------------
-# Functions:
-# Category 1: MultilayerSequential defines the model based on the inputs, MSE is the default regression loss function
-# Category 2: Neuron Layer returns a variable that specifies the number of layers/number of neurons per layer
-# Category 3: Functions for plotting/running the simulation evaluation tools
-# Category 4: Function for normalizing the permittivity functions
+# Functions: These functions are used to generate the models, for optimization, and for the neuron construction
 
 def MultiLayerSequential(input_dim, neurons, outputs, metrics=['mae']):  # Previously using MSE
     model = keras.Sequential()
@@ -325,29 +241,29 @@ def DNNModel(input_dim, neurons, outputs):
     return model
 
 
-# Title <------------------ MODEL CREATION, OPTIMIZATION, AND RUNNING --------------------------------->
-# --------- The section that runs is based on the Model Run Answer (Yes/No) -------------
-# and the Model Calib/Test Size answers (Yes/No) Sections Below will run the models according to the conditions
-# specified previously
+# =======================================================================================================
+# ======================== SECTION: MODEL TRAINING AND OPTIMIZATION  ====================================
+# =======================================================================================================
 
+# Depending on what selections are made for "model run","model calib", and "K-fold", the appropriate sections
+# will run. Generally, we only run
 
-# Note: For if the model should be run and the test size/ratio is being tested
+# =================================================================
+# ---------------- MODEL OPTIMIZATION USING GRID-SEARCH -----------
+# =================================================================
+
+# Note: This is an outdated module for a previous version of the data without the 2 MLP setup
 
 if ModelRun == 'Yes' and Model_Calib == 'Yes':
 
     # Epochs = 200, established as optimal value
     model = keras.wrappers.scikit_learn.KerasRegressor(build_fn=create_model, epochs=200, verbose=0)
 
-    batch_size = [80]
-    # epochs = [50, 100, 150, 200, 250]
-    # l_rate = [1e-5, 2e-5, 1e-4, 2e-4, 5e-4, 1e-3, 2.5e-3, 0.01]
-    # init = ['uniform', 'lecun_uniform', 'normal', 'zero', 'glorot_normal', 'glorot_uniform', 'he_normal', 'he_uniform']
-    init = ['glorot_normal']
+    batch_size = [50, 80, 100]
+    l_rate = [1e-5, 2e-5, 1e-4, 2e-4, 5e-4, 1e-3, 2.5e-3, 0.01]
+    init = ['uniform', 'lecun_uniform', 'normal', 'zero', 'glorot_normal', 'glorot_uniform', 'he_normal', 'he_uniform']
 
-    # param_grid = dict(batch_size=batch_size, epochs=epochs, learn_rate=learn_rate, init_mode=init_mode, beta_1=beta_1,
-    #                   beta_2=beta_2,neurons=neurons)
     # Used a parameter to specify the optimizer
-
     # param_grid = dict(init=init, l_rate=l_rate, batch_size=batch_size, epochs=epochs)
     param_grid = dict(init=init, batch_size=batch_size)
 
@@ -366,8 +282,13 @@ if ModelRun == 'Yes' and Model_Calib == 'Yes':
 
     keras.backend.clear_session()
 
+
+# =================================================================
+# ----------------------- MANUAL K-FOLD ---------------------------
+# =================================================================
+
+# NOTE: This section is seldom used and is not updated for the model construction with multiple DNN input models
 # Note: Section for if the model is being run/constructed by neither optimization is used
-# JS future: less hard coded values here, goal to be more streamlined for rapid model construction
 
 elif ModelRun == 'Yes' and Model_Calib == 'No' and K_Fold == 'Yes':
     # Manual K-fold cross-validation for single value/target estimation
@@ -452,12 +373,17 @@ elif ModelRun == 'Yes' and Model_Calib == 'No' and K_Fold == 'Yes':
 
     model.save(model_filename)
 
-elif ModelRun == 'Yes' and Model_Calib == 'No' and K_Fold == 'No' and Unseen_Test == 'No':
+# =================================================================
+# ------------------- GENERAL RUN CONDITION -----------------------
+# =================================================================
+
+# This is the general run section that is most commonly utilized
+
+elif ModelRun == 'Yes' and Model_Calib == 'No' and K_Fold == 'No':
     save_dir = 'Saved_Models_NoFold/'
-    '''# Create new model
-    model = MultiLayerSequential(x_train.shape[1], Neuron_Vec, y_train.shape[1])'''
     # New Section for Dividing the Simulation Dataset into two MLPs that concatenate into a DNN
 
+    # Evaluation Metrics
     '''print('New Training 1 Set Size Cols:', x_train1.shape[1])
     print('New Training 1 Set Size Rows:', x_train1.shape[0])
     print('New Training 2 Set Size Cols:', x_train2.shape[1])
@@ -502,8 +428,6 @@ elif ModelRun == 'Yes' and Model_Calib == 'No' and K_Fold == 'No' and Unseen_Tes
 
     model = tf.keras.Model(inputs=[model1.input, model2.input], outputs=DNN_Output)
 
-    print(model.summary())
-
     # Establish Callbacks
     checkpoint = tf.keras.callbacks.ModelCheckpoint(save_dir + model_save + '.h5',
                                                     montior='mae', verbose=1,
@@ -536,7 +460,12 @@ elif ModelRun == 'Yes' and Model_Calib == 'No' and K_Fold == 'No' and Unseen_Tes
 
     History = results.history
 
+    # Save Final Model
     model.save(model_filename)
+
+# =================================================================
+# --------------------- "NO RUN" CONDITION ------------------------
+# =================================================================
 
 # Note: Section for if the model is not intended to be run but only to be LOADED and PREDICTED
 
@@ -555,164 +484,10 @@ elif ModelRun == 'No':
     with open(H_fname, 'rb') as f:
         History = pickle.load(f)
 
-if Unseen_Test == 'Yes' and ModelRun == 'Yes':
-    print('<========= UNSEEN DATA ACCURACY EVALUATION ==========>')
-    # Test the Unseen Data by including increments of the data in the training process and then evaluating the results
 
-    # Append training data with unseen datasets
-    # Load Unseen (US) Data and transpose it
-
-    USData = loadmat('Data/Normalized Unseen Data - 20210706.mat',
-                     squeeze_me=True,
-                     struct_as_record=False)
-
-    Unseen_Input = USData['Unseen_Input'].T
-    Unseen_Output = USData['Unseen_Output'].T
-    Unseen_Input2 = USData['Unseen_Input2'].T
-    Unseen_Output2 = USData['Unseen_Output2'].T
-
-    # Break down of the number of datapoints to examine:
-    Datapoints_Ti = [50, 100, 150, 200, 250, 400, 500, len(Unseen_Output)]
-    Datapoints_Al2O3 = [50, 100, 150, 200, 250, 500, 1000, len(Unseen_Output2)]
-
-    # Cross check the datapoint vector
-    print('\n-------------------')
-    print('Datapoints Ti:', Datapoints_Ti)
-    print('Datapoints Al2O3:', Datapoints_Al2O3)
-    print('-------------------\n')
-
-    # Specify number of generated models per datapoint class -- take average of the value at the end
-    num_iters = 25
-
-    # Pre-initialize the Accuracy Matrix that results from the nested loop
-    Unseen_Acc_Ti = np.zeros((len(Datapoints_Ti), num_iters))
-    Unseen_Acc_Al2O3 = np.zeros((len(Datapoints_Al2O3), num_iters))
-
-    # Pre-initialize the Accuracy matrix for the losses of each model in the loop
-    Unseen_L_Ti = np.zeros((len(Datapoints_Ti), num_iters))
-    Unseen_L_Al2O3 = np.zeros((len(Datapoints_Al2O3), num_iters))
-
-    # Pre-initialize Output Matrices for Loss/Accuracy
-    AVG_Acc_Ti = np.zeros((len(Datapoints_Ti)))
-    AVG_Acc_Al2O3 = np.zeros((len(Datapoints_Al2O3)))
-
-    AVG_L_Ti = np.zeros((len(Datapoints_Ti)))
-    AVG_L_Al2O3 = np.zeros((len(Datapoints_Al2O3)))
-
-    # Pre-initialize STD matrix
-    STD_Acc_Ti = np.zeros((len(Datapoints_Ti)))
-    STD_Acc_Al2O3 = np.zeros((len(Datapoints_Al2O3)))
-
-    # Specify Neuron Vector for Input
-    Neuron_Vec = Neuron_Layer(N_Neuron, N_Layer)
-
-    # ------ Process the model across all the datapoint combinations ---
-    # this runs for a the specified number of iterations per datapoint to build an average value
-    print('\n-------------------')
-
-    for kk in range(len(Datapoints_Ti)):
-        print('\n-------------------')
-        print(f'-- Running {Datapoints_Ti[kk]} Ti and {Datapoints_Al2O3[kk]} Al2O3 Datapoints --')
-        print('-------------------\n')
-
-        # Randomize Inputs/Outputs of the Unseen Data so each iteration of the loop has a random dataset
-        Unseen_Input, Unseen_Output = shuffle(Unseen_Input, Unseen_Output)
-        Unseen_Input2, Unseen_Output2 = shuffle(Unseen_Input2, Unseen_Output2)
-
-        # Specify the ranges of input -- i.e, constructing the datasets
-        Ti_Input = Unseen_Input[:Datapoints_Ti[kk]]
-        Ti_Output = Unseen_Output[:Datapoints_Ti[kk]]
-
-        Al2O3_Input = Unseen_Input2[:Datapoints_Al2O3[kk]]
-        Al2O3_Output = Unseen_Output2[:Datapoints_Al2O3[kk]]
-
-        # Randomize Inputs, Validation for the Titanium and Alumina datasets
-        x_train_Ti, x_val_Ti, y_train_Ti, y_val_Ti = train_test_split(Ti_Input, Ti_Output, test_size=(1 - Test_Ratio),
-                                                                      random_state=seed)
-        x_train_Al2O3, x_val_Al2O3, y_train_Al2O3, y_val_Al2O3 = train_test_split(Al2O3_Input, Al2O3_Output,
-                                                                                  test_size=(1 - Test_Ratio),
-                                                                                  random_state=seed)
-        # Incorporate the data into the larger training dataset
-        x_train = np.concatenate((x_train, x_train_Ti, x_train_Al2O3), axis=0)
-        y_train = np.concatenate((y_train, y_train_Ti, y_train_Al2O3), axis=0)
-
-        # Incorporate the validation data into a larger validation dataset
-        x_val = np.concatenate((x_val, x_val_Ti, x_val_Al2O3), axis=0)
-        y_val = np.concatenate((y_val, y_val_Ti, y_val_Al2O3), axis=0)
-
-        for jj in range(num_iters):
-            print(f'Running Model Iteration Number: {jj + 1}  --  for {Datapoints_Ti[kk]} point dataset')
-            save_dir = 'Unseen Data Optimization/'
-
-            # Create new model
-            model = MultiLayerSequential(x_train.shape[1], Neuron_Vec, y_train.shape[1])
-
-            checkpoint = tf.keras.callbacks.ModelCheckpoint(save_dir + model_save + '.h5',
-                                                            montior='mae', verbose=0,
-                                                            save_best_only=True, mode='min')
-            earlyStopping = tf.keras.callbacks.EarlyStopping(monitor='val_mae', patience=20, verbose=0, mode='min')
-            reduce_lr_loss = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_mae', factor=0.5, patience=5, verbose=0,
-                                                                  min_delta=0.5e-4,
-                                                                  mode='min')
-
-            callbacks_list = [checkpoint, earlyStopping, reduce_lr_loss]
-
-            # Process new fit for the model
-            results = model.fit(x_train, y_train, epochs=epochnum, verbose=0, callbacks=callbacks_list,
-                                validation_data=(x_val, y_val))
-
-            model.load_weights(save_dir + model_save + '.h5')
-
-            # Save History of File
-            H_fname = 'History/results.pkl'
-            with open(H_fname, 'wb') as f:
-                pickle.dump(results.history, f)
-
-            History = results.history
-            tf.keras.backend.clear_session()
-
-            # Evaulate and save the metrics from the model evaluated on the entire unseen dataset
-            Unseen_L_Ti[kk][jj], Unseen_Acc_Ti[kk][jj] = model.evaluate(Unseen_Input, Unseen_Output, verbose=0)
-            Unseen_L_Al2O3[kk][jj], Unseen_Acc_Al2O3[kk][jj] = model.evaluate(Unseen_Input2, Unseen_Output2, verbose=0)
-
-            print(f'\n- - MAE Accuracy of Iteration {jj + 1} for Ti is {Unseen_Acc_Ti[kk][jj]:0.4f}')
-            print(f'- - MAE Accuracy of Iteration {jj + 1} for Al2O3 is {Unseen_Acc_Al2O3[kk][jj]:0.4f} \n')
-
-        # Outcome of the loops for each model set -- average values for comparison
-        AVG_Acc_Ti[kk] = np.mean(Unseen_Acc_Ti[[kk], :])
-        AVG_Acc_Al2O3[kk] = np.mean(Unseen_Acc_Al2O3[[kk], :])
-
-        STD_Acc_Ti[kk] = np.std(Unseen_Acc_Ti[[kk], :])
-        STD_Acc_Al2O3[kk] = np.std(Unseen_Acc_Al2O3[[kk], :])
-
-        AVG_L_Ti[kk] = np.mean(Unseen_L_Ti[[kk], :])
-        AVG_L_Al2O3[kk] = np.mean(Unseen_L_Al2O3[[kk], :])
-
-        print(f'    ---- {Datapoints_Ti[kk]} Ti Points included in training -----')
-        print(f'    Accuracy of Ti Dataset: {Unseen_Acc_Ti[[kk], :]}')
-        print(f'    Averaged Accuracy of Ti Dataset: {AVG_Acc_Ti[kk]:0.4f}')
-        print(f'    Standard Deviation of Ti Dataset: {STD_Acc_Ti[kk]:0.4f}')
-
-        print(f'\n  ---- {Datapoints_Al2O3[kk]} Al2O3 Points included in training -----')
-        print(f'    Accuracy of Al2O3 Dataset: {Unseen_Acc_Al2O3[[kk], :]}')
-        print(f'    Averaged Accuracy of Al2O3 Dataset: {AVG_Acc_Al2O3[kk]:0.4f}')
-        print(f'    Standard Deviation of Ti Dataset: {STD_Acc_Al2O3[kk]:0.4f}')
-
-    # Export and Save the Data to MATLAB for post-processing
-    mat_ids_US = dict(
-        TiAcc=Unseen_Acc_Ti,
-        TiL=Unseen_L_Ti,
-        Al2O3Acc=Unseen_Acc_Al2O3,
-        Al2O3L=Unseen_L_Al2O3,
-        TiSTD=STD_Acc_Ti,
-        Al2O3=STD_Acc_Al2O3)
-
-    filename_mat3 = 'Prediction Data\model_V3_Ni%dFD_UnseenEvaluation.mat' % Iter_number
-    savemat(filename_mat3, mat_ids_US)
-
-    # Export the data to a Pickle (variable) workspace if return is needed for python
-    with open('Unseen_Data.pkl', 'wb') as f:
-        pickle.dump([Unseen_Acc_Ti, Unseen_Acc_Al2O3, Unseen_L_Ti, Unseen_L_Al2O3], f)
+# =======================================================================================================
+# ============================= SECTION: SHOW MODEL RESULTS AND  ========================================
+# =======================================================================================================
 
 # Title ---------- Print Outcomes from Optimizations ----------------------------
 # Print Outcomes from Optimizations/Sweeps -- this section needs to be reworked after model calib was changed
@@ -800,6 +575,16 @@ def plot_hist(History, x_start=0, x_end=len(History['val_loss']), logscale=1):
     ax.set_xlim(x_start, x_end)
     plt.legend()
 
+# =======================================================================================================
+# ====================== SECTION: EVALUATE AND PREDICT USING UNSEEN DATA ================================
+# =======================================================================================================
+
+# In this section we predict/run for the unseen datasets: we evaluate/predict on the test data, griddata,
+# and library data
+
+# =================================================================
+# ----------------------- PLOT HISTORY ----------------------------
+# =================================================================
 
 #  Title ---------- Evaluate Accuracy from Optimizations / Sweeps / Model(s) ----------------------------
 # Plot History of Model Fitting/Training
@@ -810,6 +595,7 @@ plot_hist(History, logscale=1)
 train_loss = History['loss']
 val_loss = History['val_loss']
 
+# Show the Model Architecture
 print('\n====== MODEL SUMMARY ======')
 
 # Save Model Summary to a file with trainable parameters
@@ -820,6 +606,11 @@ with open('Model Summary\model_V7_Ni%dFD_summary.txt' % Iter_number, 'w') as f:
 # Print/show model config that was saved to file previously
 print(model.summary())
 model.get_config()
+
+
+# =================================================================
+# ----------------------- TEST DATASET ----------------------------
+# =================================================================
 
 print('\n====== PREDICTION and EVALUATION METRICS: ====== \n')
 
@@ -847,57 +638,68 @@ mat_ids_1 = dict(
 filename_mat3 = 'Prediction Data\model_V7_Ni%dFD_TestDataset_Prediction.mat' % Iter_number
 savemat(filename_mat3, mat_ids_1)
 
-# ----- GRID Prediction Dataset -----
-# Grid Data Prediction with Timing Function
-'''tic = time.perf_counter()
 
-# Grid Data Predict
-Grid_Predict = model.predict(GDX, verbose=0)
-
-toc = time.perf_counter()'''
+# =================================================================
+# ------------------- LOAD UNSEEN DATASETS ------------------------
+# =================================================================
 
 # ------- Load Unseen Datasets -------
 unseenmats = loadmat('Data/Unseen Datasets - 8 Input 2 Output - 20220208.mat',
                      squeeze_me=True,
                      struct_as_record=False)
 
+# =================================================================
+# ------- GRID DATA --- LARGE PREDICTION SECTION ------------------
+# =================================================================
+
+
 # ------- Predicting Large Amounts of GridData -------
-'''Unseen_MatGrid = unseenmats['Grid_Input']
-Unseen_Coords = unseenmats['GridCoords_Expanded']'''
+Unseen_MatGrid = unseenmats['Grid_Input']
+Unseen_Coords = unseenmats['GridCoords_Expanded']
 
-# Normalize Datasets Columns 7 and 8 (Permittivity)
-'''Unseen_MatGrid = normalize_dataset(Unseen_MatGrid)'''
+# Initialize Timing Function
+tic2 = time.perf_counter()
 
-'''tic2 = time.perf_counter()
-
+# Make Prediction for GridData
 Unseen_GridPredict = model.predict(Unseen_MatGrid, verbose=0)
 
 toc2 = time.perf_counter()
 
+# Save Grid Data predictions to a MAT file
 mat_ids = dict(
     Unseen_GridPredict=Unseen_GridPredict,
     Unseen_GridCoords=Unseen_Coords,
     Unseen_MatGrid=Unseen_MatGrid)
 
+# Save File
 filename_unseen = 'Prediction Data\model_V7_Ni%dFD_UnseenGrid_Prediction.mat' % Iter_number
-savemat(filename_unseen, mat_ids)'''
+savemat(filename_unseen, mat_ids)
+
+# Print timing from the Grid Predict
+print(f"Unseen Gridpoint Predictions occured for {len(Unseen_MatGrid):4.0f} grid points in {toc2 - tic2:0.4f} seconds")
+
+
+# =================================================================
+# --------------- MATERIAL LIBRARY PREDICTIONS --------------------
+# =================================================================
 
 # ------- Predicting for Included FDTD Simulations -------
 # Unseen Predictions for Pre-existing simulation (FDTD) data of materials unused in training - 100+ sims per material
 Multi_Input = unseenmats['Multi_Input']
 Multi_Output = unseenmats['Multi_Output']
 
+# Segment out inputs for multi DNN input
 Multi_InputA = Multi_Input[:, 0:4]
 Multi_InputB = Multi_Input[:, 4:8]
 
-# Normalize Datasets Columns 7 and 8 (Permittivity)
-'''Multi_Input = normalize_dataset(Multi_Input)'''
-
+# Make Model Predictions
 Unseen_Sim_Pred = model.predict([Multi_InputA, Multi_InputB], verbose=0)
 unseen_loss, unseen_acc = model.evaluate([Multi_InputA, Multi_InputB], Multi_Output, verbose=0)
 
 print('MAE of the Unseen Mat FDTD Dataset  :', unseen_acc)
 
+
+# Wrap Files
 mat_ids = dict(
     Unseen_Input=Multi_Input,
     Unseen_Output=Multi_Output,
@@ -908,53 +710,35 @@ mat_ids = dict(
 filename_unseen = 'Prediction Data\model_V7_Ni%dFD_UnseenFDTD_Prediction.mat' % Iter_number
 savemat(filename_unseen, mat_ids)
 
-# ---------- UNSEEN (SIMULATED DATASETS) TESTING LOCATION -------------
-# This section is unnecessary if the Unseen Data Testing is active
-if Unseen_Test == "No":
-    # ----- Unseen Prediction Dataset -----
-    # Predictions from Unseen Data - Ti, Al2O3
+# =================================================================
+# ------------ UNSEEN (Ti/Al2O3) LIBRARY PREDICTIONS --------------
+# =================================================================
 
-    Unseen_Input = unseenmats['Unseen_Input']
-    Unseen_Output = unseenmats['Unseen_Output']
-    Unseen_Input2 = unseenmats['Unseen_Input2']
-    Unseen_Output2 = unseenmats['Unseen_Output2']
+# ----- Unseen Prediction Dataset -----
+# Predictions from Unseen Data - Ti, Al2O3
 
-    Unseen_InputA = Unseen_Input[:, 0:4]
-    Unseen_InputB = Unseen_Input[:, 4:8]
+Unseen_Input = unseenmats['Unseen_Input']
+Unseen_Output = unseenmats['Unseen_Output']
+Unseen_Input2 = unseenmats['Unseen_Input2']
+Unseen_Output2 = unseenmats['Unseen_Output2']
 
-    Unseen_Input2A = Unseen_Input2[:, 0:4]
-    Unseen_Input2B = Unseen_Input2[:, 4:8]
+Unseen_InputA = Unseen_Input[:, 0:4]
+Unseen_InputB = Unseen_Input[:, 4:8]
 
-    '''Unseen_Input = normalize_dataset(Unseen_Input)
-    Unseen_Input2 = normalize_dataset(Unseen_Input2)'''
+Unseen_Input2A = Unseen_Input2[:, 0:4]
+Unseen_Input2B = Unseen_Input2[:, 4:8]
 
+USPred = model.predict([Unseen_InputA, Unseen_InputB], verbose=0)
+US_loss, US_acc = model.evaluate([Unseen_InputA, Unseen_InputB], Unseen_Output, verbose=0)
 
-    USPred = model.predict([Unseen_InputA, Unseen_InputB], verbose=0)
-    US_loss, US_acc = model.evaluate([Unseen_InputA, Unseen_InputB], Unseen_Output, verbose=0)
+USPred2 = model.predict([Unseen_Input2A, Unseen_Input2B], verbose=0)
+US_loss2, US_acc2 = model.evaluate([Unseen_Input2A, Unseen_Input2B], Unseen_Output2, verbose=0)
 
-    USPred2 = model.predict([Unseen_Input2A, Unseen_Input2B], verbose=0)
-    US_loss2, US_acc2 = model.evaluate([Unseen_Input2A, Unseen_Input2B], Unseen_Output2, verbose=0)
-
-    print('MAE of the Ti Unseen Prediction Dataset:', US_acc)
-    print('MAE of the Al2O3 Prediction Dataset    :', US_acc2)
-
-# Print timing from Grid Predict
-'''print(f"Gridpoint Predictions occured for {len(GDX):4.0f} grid points in {toc - tic:0.4f} seconds")'''
-'''print(f"Unseen Gridpoint Predictions occured for {len(Unseen_MatGrid):4.0f} grid points in {toc2 - tic2:0.4f} seconds")'''
+print('MAE of the Ti Unseen Prediction Dataset:', US_acc)
+print('MAE of the Al2O3 Prediction Dataset    :', US_acc2)
 
 # Export Data to Matlab File for Post-Processing -- Included in this: Standardized, Grid, and Unseen Predictions
 # Data export that includes coordinates/grid
-'''mat_ids = dict(
-    Grid_Predict=Grid_Predict,
-    GridCoords=Grid,
-    USPred=USPred,
-    US_loss=US_loss,
-    US_acc=US_acc,
-    US_out=Unseen_Output,
-    USPred2=USPred2,
-    US_loss2=US_loss2,
-    US_acc2=US_acc2,
-    US_out2=Unseen_Output2)'''
 
 mat_ids = dict(USPred=USPred,
                US_loss=US_loss,
@@ -964,9 +748,12 @@ mat_ids = dict(USPred=USPred,
                US_loss2=US_loss2,
                US_acc2=US_acc2,
                US_out2=Unseen_Output2)
-# Grid_Predict = Grid_Predict)
 
+# Save the File
 filename_mat2 = 'Prediction Data\model_V7_Ni%dFD_Prediction.mat' % Iter_number
 savemat(filename_mat2, mat_ids)
 
+# Finally, show the plots generated
 plt.show()
+
+
