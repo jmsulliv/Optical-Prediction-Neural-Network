@@ -3,6 +3,9 @@ Optical Data Prediction Tool for micropyramid style surface structures, with a n
 
 *Sullivan, J., Mirhashemi, A. & Lee, J. Deep learning based analysis of microstructured materials for thermal radiation control. Sci Rep 12, 9785 (2022). https://doi.org/10.1038/s41598-022-13832-8*
 
+# Cloning
+`git clone [Enter URL]` the `git lfs pull`
+
 # General Description
 
 Optical predictions (Emissivity and Reflectivity) based on inputs from finite difference time domain (FDTD) simulations. The inputs of the neural network have a geometric component (X, Z, substrate thickness), a component that depends on the plane wave source used in the simulation (linearly spaced wavelength points from a min and max simulation injection wavelength), and material properties defined by the complex refractive index (n and k). 
